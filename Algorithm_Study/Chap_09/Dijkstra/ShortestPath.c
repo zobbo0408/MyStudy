@@ -11,9 +11,16 @@ void Dijkstra (Graph* G, Vertex* StartVertex, Graph* ShortestPath)
 	Edge* CurrentEdge = NULL;
 	
 	int* Weights = 			(int*) malloc (sizeof(int) * G->VertexCount);
+	
 	Vertex** ShortestPathVertices = 
 							(Vertex**) malloc (sizeof(Vertex*) * G->VertexCount);
+
+	// 아직 트리에 포함되지는 않았지만, 이미 트리에 속한 정점들과 직접 연결된 정점들을 가리킵니다. 
+	// 알고리즘은 이 '경계'에 있는 정점들 중에서 가장 가중치가 낮은 간선을 선택하여 트리를 확장해 나갑니다.
 	Vertex** Fringes = 		(Vertex**) malloc (sizeof(Vertex*) * G->VertexCount);
+
+	// 각 정점이 MST에 포함될 때, 그 정점을 MST에 연결시켜준 선행(preceding) 정점이 무엇인지를 기록합니다. 
+	// 이 배열은 알고리즘 실행이 끝난 후 MST의 최종적인 구조(어떤 정점들이 어떤 간선으로 연결되어 있는지)를 재구성하는 데 사용됩니다.
 	Vertex** Precedences =  (Vertex**) malloc (sizeof(Vertex*) * G->VertexCount);
 	
 	CurrentVertex = G->Vertices;

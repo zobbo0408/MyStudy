@@ -49,6 +49,7 @@ Matrix2X2 Matrix2X2_Power ( Matrix2X2 A, int n )
 	return A;
 }
 
+// 연습문제 _ 재귀를 사용하지 않아 비용을 줄이기 : 반복문 사용
 Matrix2X2 Matrix2X2_Power_NotRecursion ( Matrix2X2 A, int n )
 {
     // n=1 이하의 예외 처리
