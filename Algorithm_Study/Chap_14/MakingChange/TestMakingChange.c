@@ -4,6 +4,7 @@
 // 400 * 2가 이상적이지만, 여기선 500*1, 100*3 총 4개로 나옴.
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "MakingChange.h"
 
 int Compare ( const void* a, const void* b)
@@ -22,9 +23,12 @@ int main()
     int i=0;
     int Pay = 0;            // 손님이 지불하는 돈
     int Price = 0;          // 가격
+    int ChangeAmount = 0;   // 거슬러줄 돈의 총 금액
     int UnitCount = 0;      // 동전의 가짓수
     int* CoinUnits = NULL;  // 동전의 단위
     int* Change = NULL;     // 거슬러주는 동전의 갯수
+    bool Divise = false;   // 인수 존재 유무
+    int Divisor = 0;
 
     printf("동전의 가짓수를 입력하세요 : ");
     scanf("%d", &UnitCount);
@@ -46,7 +50,21 @@ int main()
     printf("손님이 지불한 돈을 입력하세요 : ");
     scanf("%d", &Pay);
 
-    GetChange(Price, Pay, CoinUnits, Change, UnitCount);
+    ChangeAmount = Pay-Price;       
+
+    for ( i=0; i<UnitCount; i++)
+    {
+        if( ChangeAmount % CoinUnits[i] == 0 )
+            {
+                Divise = true;
+                Divisor = CoinUnits[i];
+                break;
+            }
+    }
+    if(Divise == true)
+        GetChangeFromDivisor(ChangeAmount, Divisor, CoinUnits, Change, UnitCount );
+    else
+        GetChange(ChangeAmount, CoinUnits, Change, UnitCount);
 
     PrintChange(CoinUnits, Change, UnitCount);
 
