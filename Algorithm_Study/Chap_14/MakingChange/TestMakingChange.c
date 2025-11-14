@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "MakingChange.h"
 
 int Compare ( const void* a, const void* b)
@@ -29,6 +30,8 @@ int main()
     int* Change = NULL;     // 거슬러주는 동전의 갯수
     bool Divise = false;   // 인수 존재 유무
     int Divisor = 0;
+    int CoinCount = 0;      // 거슬러주는 동전의 총 갯수
+    int DivCoinCount = 0;   // 다른 함수에 해당하는 코인 총 갯수
 
     printf("동전의 가짓수를 입력하세요 : ");
     scanf("%d", &UnitCount);
@@ -50,21 +53,33 @@ int main()
     printf("손님이 지불한 돈을 입력하세요 : ");
     scanf("%d", &Pay);
 
-    ChangeAmount = Pay-Price;       
+    ChangeAmount = Pay-Price;
+    GetChange(ChangeAmount, CoinUnits, Change, UnitCount); 
+    for (i=0; i<UnitCount; i++)
+    {
+        CoinCount += Change[i];
+    }
 
     for ( i=0; i<UnitCount; i++)
     {
         if( ChangeAmount % CoinUnits[i] == 0 )
             {
-                Divise = true;
-                Divisor = CoinUnits[i];
-                break;
+                DivCoinCount = ChangeAmount / CoinUnits[i];
+                if( DivCoinCount < CoinCount )
+                {
+                    Divise = true;
+                    Divisor = CoinUnits[i];
+                    break;
+                }
             }
     }
     if(Divise == true)
-        GetChangeFromDivisor(ChangeAmount, Divisor, CoinUnits, Change, UnitCount );
-    else
-        GetChange(ChangeAmount, CoinUnits, Change, UnitCount);
+    {
+        for(i=0; i<UnitCount; i++)
+            Change[i] = 0;
+        GetChangeFromDivisor ( ChangeAmount, Divisor, CoinUnits, Change, UnitCount );
+    }
+        
 
     PrintChange(CoinUnits, Change, UnitCount);
 
